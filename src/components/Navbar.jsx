@@ -38,11 +38,12 @@ const SearchContainer = styled.div`
   align-items: center;
   margin-left: 25px;
   padding: 5px;
+  ${mobile({ marginLeft: "10px", padding: "3px" })}
 `;
 
 const Input = styled.input`
   border: none;
-  ${mobile({ width: "50px" })}
+  ${mobile({ width: "0px", display: "none" })}
 `;
 
 const Center = styled.div`
@@ -52,8 +53,9 @@ const Center = styled.div`
 
 const Logo = styled.h1`
   font-weight: bold;
-  ${mobile({ fontSize: "24px" })}
+  ${mobile({ fontSize: "18px" })}
 `;
+
 const Right = styled.div`
   flex: 1;
   display: flex;
@@ -66,6 +68,10 @@ const MenuItem = styled.div`
   font-size: 14px;
   cursor: pointer;
   margin-left: 25px;
+  transition: color 0.3s;
+  &:hover {
+    color: blue;
+  }
   ${mobile({ fontSize: "12px", marginLeft: "10px" })}
 `;
 
@@ -74,7 +80,7 @@ const Navbar = () => {
     <Container>
       <Wrapper>
         <Left>
-          <Language></Language>
+          <Language>EN</Language>
           <SearchContainer>
             <Input placeholder="Search" />
             <Search style={{ color: "gray", fontSize: 16 }} />
@@ -84,10 +90,16 @@ const Navbar = () => {
           <Logo>COMMUNITY4YOU</Logo>
         </Center>
         <Right>
-          <MenuItem><Link className="link" to="/Register">REGISTER</Link></MenuItem>
-          <MenuItem><Link className="link" to="/Login">LOG IN</Link></MenuItem>
-          {/* <MenuItem>Register</MenuItem>
-          <MenuItem>Log IN</MenuItem> */}
+          <MenuItem>
+            <Link className="link" to="/Register">
+              REGISTER
+            </Link>
+          </MenuItem>
+          <MenuItem>
+            <Link className="link" to="/Login">
+              LOG IN
+            </Link>
+          </MenuItem>
         </Right>
       </Wrapper>
     </Container>
