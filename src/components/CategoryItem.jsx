@@ -50,7 +50,7 @@ const CategoryItem = ({ item }) => {
       <Image src={item.img} />
       <Info>
         <Title>{item.title}</Title>
-        <Button>Abouts</Button>
+        <Button>Abouttts</Button>
       </Info>
     </Container>
   );
