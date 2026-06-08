@@ -11,7 +11,10 @@
 [build]
   base = "client"
   command = "npm install && npm run build"
-  publish = "client/dist"
+  # publish is resolved RELATIVE to base, so with base="client" this must be
+  # "dist" (i.e. client/dist), not "client/dist" which would resolve to
+  # client/client/dist and fail the deploy.
+  publish = "dist"
 
 # SPA fallback: send every unmatched path to index.html so React Router works.
 [[redirects]]
