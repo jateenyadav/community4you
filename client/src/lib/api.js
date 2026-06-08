@@ -1,8 +1,21 @@
+import { mockRequest } from "./mockBackend.js";
+
 const TOKEN_KEY = "c4y_token";
 
-// In production point this at your deployed backend (e.g. Render) via VITE_API_URL.
+// In production point this at your deployed backend via VITE_API_URL.
 // In dev it stays empty and Vite proxies "/api" to the local server.
+// If no backend URL is set AND we're not on localhost (i.e. a static deploy
+// like Netlify), fall back to an in-browser mock backend so the demo works
+// with zero infrastructure.
 const API_BASE = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
+
+const isLocalhost =
+  typeof window !== "undefined" &&
+  /^(localhost|127\.0\.0\.1|0\.0\.0\.0)$/.test(window.location.hostname);
+
+// Use the mock when there's no configured backend and we're not running the
+// local dev server (which proxies /api to a real Express instance).
+const USE_MOCK = !API_BASE && !isLocalhost;
 
 export function getToken() {
   return localStorage.getItem(TOKEN_KEY);
@@ -13,9 +26,20 @@ export function setToken(token) {
 }
 
 async function request(path, { method = "GET", body, auth = true } = {}) {
+  const token = getToken();
+
+  if (USE_MOCK) {
+    const headers = {};
+    if (auth && token) headers.Authorization = `Bearer ${token}`;
+    try {
+      return await mockRequest(path, { method, body, headers });
+    } catch (err) {
+      throw new Error(err.message || "Request failed");
+    }
+  }
+
   const headers = {};
   if (body !== undefined) headers["Content-Type"] = "application/json";
-  const token = getToken();
   if (auth && token) headers.Authorization = `Bearer ${token}`;
 
   const res = await fetch(`${API_BASE}/api${path}`, {

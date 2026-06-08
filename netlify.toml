@@ -1,6 +1,12 @@
 # Netlify build config for the React (Vite) client living in /client.
-# The backend is deployed separately (e.g. Render); the client talks to it
-# via the VITE_API_URL environment variable set in the Netlify UI.
+#
+# This is a FRONTEND-ONLY demo: there is no separate backend to deploy.
+# When VITE_API_URL is not set, the client uses an in-browser mock backend
+# (localStorage-backed) so the whole app works on Netlify with zero infra.
+# Sample data is seeded automatically and resets on a hard refresh.
+#
+# To point the client at a real backend later, set VITE_API_URL in the
+# Netlify UI (Site settings -> Environment variables) and redeploy.
 
 [build]
   base = "client"

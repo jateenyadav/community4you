@@ -119,6 +119,31 @@ When `client/dist` exists, the Express server serves the SPA and falls back to `
 
 ---
 
+## Deployment
+
+This project ships two ways to run, so you can host the whole thing with **zero backend infrastructure** or wire it to a real API.
+
+### Option A — Frontend-only demo (default, e.g. Netlify)
+
+If the client is built **without** a `VITE_API_URL` and served from a static host, it automatically falls back to an **in-browser mock backend** (backed by `localStorage`). Sample communities, posts, likes, and comments are seeded on first load, and the demo account works out of the box. Data resets on a hard refresh — perfect for a portfolio showcase.
+
+Netlify config lives in [`netlify.toml`](./netlify.toml):
+
+- **Base directory:** `client`
+- **Build command:** `npm install && npm run build`
+- **Publish directory:** `client/dist`
+- SPA routing is handled via a `/* -> /index.html` redirect (also in [`client/public/_redirects`](./client/public/_redirects)).
+
+Just connect the repo to Netlify and deploy — no environment variables required.
+
+> **Demo login:** `demo@community4you.dev` / `demo1234`
+
+### Option B — Real backend
+
+To use the actual Express + SQLite API, set `VITE_API_URL` to your deployed backend URL (e.g. in the Netlify environment variables) and rebuild. The client will then talk to that API instead of the mock. On the server, set `CLIENT_ORIGIN` to your frontend origin for production CORS.
+
+---
+
 ## API reference
 
 Base URL: `http://localhost:4000`
