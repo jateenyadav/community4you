@@ -1,5 +1,9 @@
 const TOKEN_KEY = "c4y_token";
 
+// In production point this at your deployed backend (e.g. Render) via VITE_API_URL.
+// In dev it stays empty and Vite proxies "/api" to the local server.
+const API_BASE = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
+
 export function getToken() {
   return localStorage.getItem(TOKEN_KEY);
 }
@@ -14,7 +18,7 @@ async function request(path, { method = "GET", body, auth = true } = {}) {
   const token = getToken();
   if (auth && token) headers.Authorization = `Bearer ${token}`;
 
-  const res = await fetch(`/api${path}`, {
+  const res = await fetch(`${API_BASE}/api${path}`, {
     method,
     headers,
     body: body !== undefined ? JSON.stringify(body) : undefined,

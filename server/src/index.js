@@ -5,6 +5,8 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import fs from "node:fs";
 
+import db from "./db.js";
+import { seed } from "./seed.js";
 import authRoutes from "./routes/auth.js";
 import communityRoutes from "./routes/communities.js";
 import meRoutes from "./routes/me.js";
@@ -13,7 +15,28 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 const PORT = process.env.PORT || 4000;
 
-app.use(cors());
+// Auto-seed when the database is empty (handy on ephemeral hosts like Render).
+try {
+  const { count } = db.prepare("SELECT COUNT(*) AS count FROM users").get();
+  if (count === 0) {
+    console.log("Empty database detected — seeding sample data…");
+    seed();
+  }
+} catch (err) {
+  console.error("Auto-seed check failed:", err.message);
+}
+
+// CORS: allow a comma-separated CLIENT_ORIGIN allowlist, otherwise allow all.
+const allowedOrigins = (process.env.CLIENT_ORIGIN || "")
+  .split(",")
+  .map((o) => o.trim())
+  .filter(Boolean);
+
+app.use(
+  cors({
+    origin: allowedOrigins.length ? allowedOrigins : true,
+  })
+);
 app.use(express.json({ limit: "2mb" }));
 
 app.get("/api/health", (_req, res) => res.json({ status: "ok", time: new Date().toISOString() }));

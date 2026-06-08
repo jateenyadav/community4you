@@ -1,0 +1,33 @@
+# Render blueprint for the Community4You backend (Node + Express + SQLite).
+# Deploy from the Render dashboard via "New > Blueprint" pointed at this repo.
+#
+# NOTE: The free plan has an ephemeral filesystem, so the SQLite DB resets on
+# each restart/deploy. That's fine here — the server auto-seeds sample data on
+# startup when the DB is empty (see server/src/index.js). To make data durable,
+# upgrade to a paid plan and uncomment the `disk` block + DB_PATH below.
+services:
+  - type: web
+    name: community4you-api
+    runtime: node
+    rootDir: server
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: 20.11.1
+      - key: JWT_SECRET
+        generateValue: true
+      # Set this to your Netlify URL after the frontend is deployed, e.g.
+      # https://community44you.netlify.app
+      - key: CLIENT_ORIGIN
+        sync: false
+    # --- Persistent storage (paid plans only) -------------------------------
+    # envVars:
+    #   - key: DB_PATH
+    #     value: /var/data/community4you.db
+    # disk:
+    #   name: community4you-data
+    #   mountPath: /var/data
+    #   sizeGB: 1

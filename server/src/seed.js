@@ -1,9 +1,11 @@
 import bcrypt from "bcryptjs";
+import { fileURLToPath } from "node:url";
 import db from "./db.js";
 import { createUser } from "./repositories/users.js";
 import { createCommunity, join } from "./repositories/communities.js";
 import { create as createPost, like as likePost, createComment } from "./repositories/posts.js";
 
+export function seed() {
 console.log("Seeding database…");
 
 // Reset (FK cascade clears the rest).
@@ -140,3 +142,9 @@ createComment({ postId: p4.id, authorId: aria.id, body: "Count me in for the Rea
 
 console.log(`Seeded ${users.length} users, ${created.length} communities.`);
 console.log("Login with demo@community4you.dev / demo1234");
+}
+
+// Run directly via `node src/seed.js`.
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
+  seed();
+}

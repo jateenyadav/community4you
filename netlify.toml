@@ -1,0 +1,14 @@
+# Netlify build config for the React (Vite) client living in /client.
+# The backend is deployed separately (e.g. Render); the client talks to it
+# via the VITE_API_URL environment variable set in the Netlify UI.
+
+[build]
+  base = "client"
+  command = "npm install && npm run build"
+  publish = "client/dist"
+
+# SPA fallback: send every unmatched path to index.html so React Router works.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
