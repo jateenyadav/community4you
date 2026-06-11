@@ -58,6 +58,7 @@ h1, h2, h3 { font-weight: 700; }
 }
 .nav-inner { display: flex; align-items: center; gap: 18px; height: 66px; }
 .brand { display: flex; align-items: center; gap: 11px; font-weight: 800; font-size: 19px; letter-spacing: -0.02em; }
+.brand .brand-logo { width: 32px; height: 32px; border-radius: 9px; object-fit: cover; box-shadow: 0 4px 14px rgba(79, 114, 240, 0.4); }
 .brand .dot { width: 28px; height: 28px; border-radius: 9px; background: linear-gradient(135deg, var(--primary), var(--accent)); box-shadow: 0 4px 14px rgba(79, 114, 240, 0.4); }
 .nav-links { display: flex; align-items: center; gap: 4px; margin-left: auto; }
 .nav-link { padding: 8px 14px; border-radius: 10px; color: var(--text-dim); font-weight: 600; font-size: 14px; transition: all 0.15s; }

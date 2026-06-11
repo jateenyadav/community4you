@@ -14,7 +14,7 @@ export default function Navbar() {
     <nav className="nav">
       <div className="container nav-inner">
         <Link to="/" className="brand">
-          <span className="dot" />
+          <img className="brand-logo" src="/community.png" alt="Community4You" />
           Community4You
         </Link>
         <div className="nav-links">
